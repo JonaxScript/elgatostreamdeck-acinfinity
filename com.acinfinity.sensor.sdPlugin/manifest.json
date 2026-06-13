@@ -4,7 +4,7 @@
   "Author": "Custom",
   "Actions": [
     {
-      "Name": "Temperatur & Luftfeuchtigkeit",
+      "Name": "Temperature & Humidity",
       "UUID": "com.acinfinity.sensor.display",
       "Icon": "images/action",
       "States": [
@@ -20,7 +20,7 @@
   "Category": "AC Infinity",
   "CategoryIcon": "images/category",
   "CodePath": "plugin.html",
-  "Description": "Zeigt Temperatur und Luftfeuchtigkeit des AC Infinity Controllers an.",
+  "Description": "Displays live temperature and humidity from an AC Infinity controller on a Stream Deck key.",
   "Icon": "images/category",
   "SDKVersion": 2,
   "OS": [

@@ -1,0 +1,39 @@
+{
+  "Name": "AC Infinity Sensor",
+  "Version": "1.0.0",
+  "Author": "Custom",
+  "Actions": [
+    {
+      "Name": "Temperatur & Luftfeuchtigkeit",
+      "UUID": "com.acinfinity.sensor.display",
+      "Icon": "images/action",
+      "States": [
+        {
+          "Image": "images/action",
+          "ShowTitle": false
+        }
+      ],
+      "PropertyInspectorPath": "pi.html",
+      "SupportedInMultiActions": false
+    }
+  ],
+  "Category": "AC Infinity",
+  "CategoryIcon": "images/category",
+  "CodePath": "plugin.html",
+  "Description": "Zeigt Temperatur und Luftfeuchtigkeit des AC Infinity Controllers an.",
+  "Icon": "images/category",
+  "SDKVersion": 2,
+  "OS": [
+    {
+      "Platform": "windows",
+      "MinimumVersion": "10"
+    },
+    {
+      "Platform": "mac",
+      "MinimumVersion": "10.11"
+    }
+  ],
+  "Software": {
+    "MinimumVersion": "6.0"
+  }
+}

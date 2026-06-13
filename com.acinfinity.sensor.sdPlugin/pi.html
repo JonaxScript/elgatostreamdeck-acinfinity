@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>AC Infinity Settings</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+            background: #2d2d2d;
+            color: #cccccc;
+            padding: 16px;
+            font-size: 13px;
+        }
+
+        .section {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #555;
+            border-bottom: 1px solid #3a3a3a;
+            padding-bottom: 6px;
+            margin-top: 18px;
+            margin-bottom: 12px;
+        }
+        .section:first-child { margin-top: 0; }
+
+        .field { margin-bottom: 10px; }
+
+        label {
+            display: block;
+            font-size: 11px;
+            color: #888;
+            margin-bottom: 3px;
+        }
+
+        input, select {
+            width: 100%;
+            background: #1c1c1c;
+            border: 1px solid #444;
+            border-radius: 4px;
+            color: #eee;
+            padding: 6px 8px;
+            font-size: 13px;
+        }
+        input:focus, select:focus { outline: none; border-color: #0078d4; }
+        input[type=number] { -moz-appearance: textfield; }
+        input[type=number]::-webkit-outer-spin-button,
+        input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; }
+
+        .row { display: flex; gap: 8px; }
+        .row .field { flex: 1; }
+
+        .hint { font-size: 10px; color: #555; margin-top: 3px; }
+
+        .toggle-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 6px 0;
+        }
+        .toggle-row label {
+            margin: 0;
+            font-size: 12px;
+            color: #ccc;
+            cursor: pointer;
+        }
+        .toggle-row .sub { font-size: 10px; color: #555; }
+        .switch { position: relative; width: 36px; height: 20px; flex-shrink: 0; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute; inset: 0;
+            background: #444; border-radius: 20px;
+            cursor: pointer; transition: background 0.2s;
+        }
+        .slider:before {
+            content: ''; position: absolute;
+            width: 14px; height: 14px; left: 3px; top: 3px;
+            background: #fff; border-radius: 50%;
+            transition: transform 0.2s;
+        }
+        input:checked + .slider { background: #0078d4; }
+        input:checked + .slider:before { transform: translateX(16px); }
+
+        #logArea {
+            display: none;
+            margin-top: 10px;
+        }
+        #logArea.visible { display: block; }
+        #logBox {
+            width: 100%;
+            height: 120px;
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 4px;
+            color: #7bc8ff;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 10px;
+            padding: 6px;
+            resize: none;
+            overflow-y: auto;
+        }
+        #logClear {
+            margin-top: 4px;
+            background: none;
+            border: 1px solid #444;
+            border-radius: 4px;
+            color: #888;
+            font-size: 10px;
+            padding: 3px 8px;
+            cursor: pointer;
+            width: auto;
+        }
+        #logClear:hover { border-color: #666; color: #ccc; }
+
+        #status {
+            margin-top: 14px;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            text-align: center;
+            display: none;
+        }
+        #status.ok   { display: block; background: #1a3a1a; color: #4caf50; border: 1px solid #2d5a2d; }
+        #status.err  { display: block; background: #3a1a1a; color: #f44336; border: 1px solid #5a2d2d; }
+        #status.info { display: block; background: #1a2a3a; color: #4fc3f7; border: 1px solid #2d4a5a; }
+    </style>
+</head>
+<body>
+
+<div class="section">Account</div>
+
+<div class="field">
+    <label>Email Address</label>
+    <input type="email" id="email" placeholder="your@email.com">
+</div>
+
+<div class="field">
+    <label>Password</label>
+    <input type="password" id="password" placeholder="Password">
+    <div class="hint">Alternative: edit config.js in the plugin folder</div>
+</div>
+
+<div class="section">Display</div>
+
+<div class="row">
+    <div class="field">
+        <label>Device Index</label>
+        <input type="number" id="deviceIndex" min="0" max="99" value="0">
+        <div class="hint">0 = first device</div>
+    </div>
+    <div class="field">
+        <label>Temperature Unit</label>
+        <select id="tempUnit">
+            <option value="C">°C Celsius</option>
+            <option value="F">°F Fahrenheit</option>
+        </select>
+    </div>
+</div>
+
+<div class="field">
+    <label>Font Size</label>
+    <select id="fontSize">
+        <option value="small">Small</option>
+        <option value="medium" selected>Medium</option>
+        <option value="large">Large</option>
+        <option value="xl">Extra Large</option>
+        <option value="custom">Custom</option>
+    </select>
+</div>
+
+<div id="customSizes" style="display:none">
+    <div class="row">
+        <div class="field">
+            <label>Temp Size (px)</label>
+            <input type="number" id="customTempSize" min="10" max="80" value="30">
+        </div>
+        <div class="field">
+            <label>Humidity Size (px)</label>
+            <input type="number" id="customHumSize" min="10" max="70" value="26">
+        </div>
+    </div>
+</div>
+
+<div class="field">
+    <label>Refresh Interval (seconds)</label>
+    <input type="number" id="refreshInterval" min="10" max="3600" value="30">
+</div>
+
+<div class="section">Advanced</div>
+
+<div class="toggle-row">
+    <div>
+        <label for="debugLog">Debug Log</label>
+        <div class="sub">Live log below + Stream Deck log file</div>
+    </div>
+    <label class="switch">
+        <input type="checkbox" id="debugLog">
+        <span class="slider"></span>
+    </label>
+</div>
+
+<div id="logArea">
+    <textarea id="logBox" readonly placeholder="Waiting for log entries..."></textarea>
+    <button id="logClear">Clear</button>
+</div>
+
+<div id="status"></div>
+
+<script>
+(function () {
+    var ws         = null;
+    var actionUUID = null;
+    var saveTimer  = null;
+
+    var fieldIds = ['email', 'password', 'deviceIndex', 'tempUnit', 'fontSize', 'customTempSize', 'customHumSize', 'refreshInterval', 'debugLog'];
+
+    function setStatus(msg, type) {
+        var el = document.getElementById('status');
+        el.textContent = msg;
+        el.className = type || '';
+    }
+
+    function toggleCustomSizes() {
+        var isCustom = document.getElementById('fontSize').value === 'custom';
+        document.getElementById('customSizes').style.display = isCustom ? 'block' : 'none';
+    }
+
+    function getFormValues() {
+        return {
+            email:           document.getElementById('email').value.trim(),
+            password:        document.getElementById('password').value,
+            deviceIndex:     parseInt(document.getElementById('deviceIndex').value) || 0,
+            tempUnit:        document.getElementById('tempUnit').value,
+            fontSize:        document.getElementById('fontSize').value,
+            customTempSize:  parseInt(document.getElementById('customTempSize').value) || 30,
+            customHumSize:   parseInt(document.getElementById('customHumSize').value)  || 26,
+            refreshInterval: parseInt(document.getElementById('refreshInterval').value) || 30,
+            debugLog:        document.getElementById('debugLog').checked
+        };
+    }
+
+    function setFormValues(s) {
+        if (!s) return;
+        document.getElementById('email').value            = s.email           || '';
+        document.getElementById('password').value         = s.password        || '';
+        document.getElementById('deviceIndex').value      = s.deviceIndex     != null ? s.deviceIndex : 0;
+        document.getElementById('tempUnit').value         = s.tempUnit        || 'C';
+        document.getElementById('fontSize').value         = s.fontSize        || 'medium';
+        document.getElementById('customTempSize').value   = s.customTempSize  || 30;
+        document.getElementById('customHumSize').value    = s.customHumSize   || 26;
+        document.getElementById('refreshInterval').value  = s.refreshInterval || 30;
+        document.getElementById('debugLog').checked       = !!s.debugLog;
+        toggleCustomSizes();
+    }
+
+    function saveSettings() {
+        if (!ws || ws.readyState !== WebSocket.OPEN || !actionUUID) return;
+        ws.send(JSON.stringify({
+            event:   'setSettings',
+            context: actionUUID,
+            payload: getFormValues()
+        }));
+        setStatus('Saved', 'ok');
+        setTimeout(function () { setStatus('', ''); }, 2000);
+    }
+
+    function scheduleSave() {
+        clearTimeout(saveTimer);
+        saveTimer = setTimeout(saveSettings, 500);
+    }
+
+    fieldIds.forEach(function (id) {
+        var el = document.getElementById(id);
+        el.addEventListener('input',  scheduleSave);
+        el.addEventListener('change', saveSettings);
+    });
+    document.getElementById('fontSize').addEventListener('change', toggleCustomSizes);
+    // Checkbox fires 'change' but not 'input' reliably in all browsers
+    document.getElementById('debugLog').addEventListener('change', function () {
+        saveSettings();
+        document.getElementById('logArea').classList.toggle('visible', this.checked);
+    });
+
+    document.getElementById('logClear').addEventListener('click', function () {
+        document.getElementById('logBox').value = '';
+    });
+
+    function appendLog(msg) {
+        var box = document.getElementById('logBox');
+        box.value += (box.value ? '\n' : '') + msg;
+        box.scrollTop = box.scrollHeight;
+    }
+
+    window.connectElgatoStreamDeckSocket = function (inPort, inUUID, inRegisterEvent, inInfo, inActionInfo) {
+        actionUUID = inUUID;
+
+        // Load settings immediately from inActionInfo — no need to wait for WebSocket
+        try {
+            var info = JSON.parse(inActionInfo);
+            if (info && info.payload && info.payload.settings) {
+                setFormValues(info.payload.settings);
+            }
+        } catch (e) {}
+
+        ws = new WebSocket('ws://127.0.0.1:' + inPort);
+
+        ws.onopen = function () {
+            ws.send(JSON.stringify({ event: inRegisterEvent, uuid: inUUID }));
+            ws.send(JSON.stringify({ event: 'getSettings', context: inUUID }));
+            setStatus('Connected', 'info');
+            setTimeout(function () { setStatus('', ''); }, 1500);
+        };
+
+        ws.onmessage = function (e) {
+            try {
+                var data = JSON.parse(e.data);
+                if (data.event === 'didReceiveSettings') {
+                    var s = data.payload && data.payload.settings;
+                    setFormValues(s);
+                    if (s && s.debugLog) {
+                        document.getElementById('logArea').classList.add('visible');
+                    }
+                } else if (data.event === 'sendToPropertyInspector') {
+                    if (data.payload && data.payload.type === 'log') {
+                        appendLog(data.payload.message);
+                    } else if (data.payload && data.payload.type === 'log_history') {
+                        var box = document.getElementById('logBox');
+                        box.value = data.payload.messages.join('\n');
+                        box.scrollTop = box.scrollHeight;
+                    }
+                }
+            } catch (err) {}
+        };
+
+        ws.onerror  = function () { setStatus('Connection error', 'err'); };
+        ws.onclose  = function () { setStatus('Disconnected', 'err'); };
+    };
+}());
+</script>
+</body>
+</html>

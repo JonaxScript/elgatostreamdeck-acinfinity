@@ -2,6 +2,8 @@
 
 Displays **live temperature and humidity** from your AC Infinity controller directly on an Elgato Stream Deck key. Data is fetched from the official AC Infinity cloud API and refreshes automatically at a configurable interval.
 
+<img width="603" height="1163" alt="grafik" src="https://github.com/user-attachments/assets/466239a6-0d97-4498-a97d-eb01ca9035f4" />
+
 ---
 
 ## Features
